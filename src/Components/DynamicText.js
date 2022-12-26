@@ -1,0 +1,55 @@
+import React, { useEffect } from 'react';
+
+const DynamicText = () => {
+
+    useEffect(()=>{
+        const target =  document.getElementById("text-target");
+        let array = ["Simple", "clear", 'smart', 'strong'];
+        let wordIndex = 0;
+        let letterIndex = 0;
+
+        const createLetter = ()=>{
+            const letter = document.createElement("span");
+            target.appendChild(letter);
+
+            letter.classList.add("Letter");
+            letter.style.opacity = "0";
+            letter.style.animation = "anim 5s ease forwards";
+            letter.textContent = array[wordIndex][letterIndex];
+            setTimeout(()=>{
+                letter.remove();
+            },2000);
+        }
+        
+
+        const loop = ()=>{
+            setTimeout(()=>{
+                if (wordIndex >= array.length) {
+                    letterIndex = 0;
+                    wordIndex = 0;
+                    loop();
+                }else if(letterIndex < array[wordIndex].length){
+                    createLetter();
+                    letterIndex++;
+                loop();
+                }else{
+                    letterIndex = 0;
+                    wordIndex++;
+                    setTimeout(loop, 2000);
+                    
+                }
+               
+            },80);
+        }
+
+        loop();
+    },[]);
+    return (
+        <span className="dynamic-text">
+            <span>Agence</span>
+            <span id="text-target"></span>
+        </span>
+    );
+};
+
+export default DynamicText;
